@@ -4,17 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="800"
+        Height="600"
         x:Class="l4yg0n_textytext.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="l4yg0n_textytext">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    <!-- Ezzel a TextBox borderjet rejtjuk el, amikor focusban van -->
+    <Window.Resources>
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused">Transparent</SolidColorBrush>
+    </Window.Resources>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <DockPanel>
+        <Border DockPanel.Dock="Top" BorderBrush="#f0f0f0" BorderThickness="0,0,0,2">
+        <Menu Background="#ffff" >
+            <MenuItem Header="_File">
+                <MenuItem x:Name="NewMenuItem" Header="_New"></MenuItem>
+                <MenuItem x:Name="OpenMenuItem" Header="_Open"></MenuItem>
+                <MenuItem x:Name="SaveMenuItem" Header="_Save"></MenuItem>
+                <MenuItem x:Name="SaveAsMenuItem" Header="Save _As..."></MenuItem>
+                <Separator/>
+                <MenuItem Header="_Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About TextyText"></MenuItem>
+            </MenuItem>
+        </Menu>
+        </Border>
+        <TextBox Name="Editor" Background="#ffffff"></TextBox>
+    </DockPanel>
 
 </Window>

@@ -9,7 +9,7 @@
         x:Class="l4yg0n_textytext.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="l4yg0n_textytext">
+        Title="{Binding WindowTitle, Mode=OneWay}">
 
     <!-- Ezzel a TextBox borderjet rejtjuk el, amikor focusban van -->
     <Window.Resources>
@@ -21,7 +21,7 @@
         <Menu Background="#ffff" >
             <MenuItem Header="_File">
                 <MenuItem x:Name="NewMenuItem" Header="_New"></MenuItem>
-                <MenuItem x:Name="OpenMenuItem" Header="_Open"></MenuItem>
+                <MenuItem x:Name="OpenMenuItem" Header="_Open" Command="{Binding OpenFileCommand}"></MenuItem>
                 <MenuItem x:Name="SaveMenuItem" Header="_Save"></MenuItem>
                 <MenuItem x:Name="SaveAsMenuItem" Header="Save _As..."></MenuItem>
                 <Separator/>
@@ -32,7 +32,7 @@
             </MenuItem>
         </Menu>
         </Border>
-        <TextBox Name="Editor" Background="#ffffff"></TextBox>
+        <TextBox Name="Editor" Background="#ffffff" Text="{Binding FileText, Mode=TwoWay}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"></TextBox>
     </DockPanel>
 
 </Window>

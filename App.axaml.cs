@@ -1,11 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
 using l4yg0n_textytext.ViewModels;
 using l4yg0n_textytext.Views;
+using l4yg0n_textytext.Services;
 
 namespace l4yg0n_textytext;
 
@@ -22,7 +20,7 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(new FileService()),
             };
         }
 

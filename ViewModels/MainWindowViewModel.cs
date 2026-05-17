@@ -50,9 +50,18 @@ public partial class MainWindowViewModel : ViewModelBase
         await _fileService.ShowAboutDialogAsync();
     }
 
-    [RelayCommand]
-    private void Exit()
+    // Ha barmi valtoztatas tortent, akkor felhasznaloi konfirmaciot varunk a jovahagyashoz.
+    private async Task<bool> ConfirmDiscardAsync()
     {
+        return !IsDirty || await _fileService.ConfirmAsync(
+            "You have unsaved changes. Are you sure you want to discard them?");
+    }
+
+    [RelayCommand]
+    private async Task Exit()
+    {
+        // Ha false ter vissza, akkor nem lepunk ki megsem
+        if (!await ConfirmDiscardAsync()) return;
         _fileService.Exit();
     }
 }

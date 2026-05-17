@@ -41,6 +41,12 @@ public sealed class FileService : IFileService
         return files?.Count >= 1 ? files[0] : null;
     }
 
+    public async Task<bool> ConfirmAsync(string message)
+    {
+        var owner = GetMainWindow();
+        var dialog = new ConfirmationDialog(message);
+        return await dialog.ShowDialog<bool>(owner);
+    }
     public void Exit()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

@@ -12,10 +12,12 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly IFileService _fileService;
 
+    // ObservableProperty convencio: private _varName --> hivatkozva VarName
     [ObservableProperty] private string? _fileText;
+    // Modosult-e a fajl tartalma, miota megnyitottuk?
     [ObservableProperty][NotifyPropertyChangedFor(nameof(WindowTitle))] private bool _isDirty;
     [ObservableProperty][NotifyPropertyChangedFor(nameof(WindowTitle))] private string? _fileDisplayName;
-
+    
     public string WindowTitle => FileDisplayName is not null
         ? $"{FileDisplayName}{(IsDirty ? " *" : "")} - TextyText"
         : $"Untitled{(IsDirty ? " *" : "")} - TextyText";
@@ -25,6 +27,12 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(IFileService fileService)
     {
         _fileService = fileService;
+    }
+    
+    // Avalonia builtin-t extendelunk
+    partial void OnFileTextChanged(string? value)
+    {
+        IsDirty = true;
     }
 
     [RelayCommand]
@@ -39,11 +47,31 @@ public partial class MainWindowViewModel : ViewModelBase
         FileDisplayName = Path.GetFileName(result.Path);
     }
 
-    partial void OnFileTextChanged(string? value)
+    [RelayCommand]
+    private async Task SaveFile()
     {
-        IsDirty = true;
+        if (_currentFilePath is not null)
+        {
+            await _fileService.SaveFileAsync(_currentFilePath, FileText ?? string.Empty);
+            IsDirty = false;
+        }
+        else
+        {
+            await SaveFileAs();
+        }
     }
 
+    [RelayCommand]
+    private async Task SaveFileAs()
+    {
+        var result = await _fileService.SaveFileAsAsync(FileText ?? string.Empty);
+        if (result is null) return;
+        
+        _currentFilePath = result.Path;
+        FileDisplayName = result.Name;
+        IsDirty = false;
+    }
+    
     [RelayCommand]
     private async Task About()
     {

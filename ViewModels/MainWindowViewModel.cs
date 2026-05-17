@@ -18,7 +18,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public string WindowTitle => FileDisplayName is not null
         ? $"{FileDisplayName}{(IsDirty ? " *" : "")} - TextyText"
-        : "TextyText";
+        : $"Untitled{(IsDirty ? " *" : "")} - TextyText";
 
     private string? _currentFilePath;
 

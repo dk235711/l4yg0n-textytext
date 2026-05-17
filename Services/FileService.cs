@@ -40,6 +40,15 @@ public sealed class FileService : IFileService
 
         return files?.Count >= 1 ? files[0] : null;
     }
+
+    public void Exit()
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Shutdown();   
+        }
+    }
+
     public async Task ShowAboutDialogAsync()
     {
         var owner = GetMainWindow();

@@ -49,4 +49,10 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         await _fileService.ShowAboutDialogAsync();
     }
+
+    [RelayCommand]
+    private void Exit()
+    {
+        _fileService.Exit();
+    }
 }

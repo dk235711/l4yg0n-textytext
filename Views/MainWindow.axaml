@@ -25,7 +25,7 @@
                 <MenuItem x:Name="SaveMenuItem" Header="_Save"></MenuItem>
                 <MenuItem x:Name="SaveAsMenuItem" Header="Save _As..."></MenuItem>
                 <Separator/>
-                <MenuItem Header="_Exit"></MenuItem>
+                <MenuItem Header="_Exit" Command="{Binding ExitCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About TextyText" Command="{Binding AboutCommand}"></MenuItem>

@@ -41,7 +41,7 @@ public sealed class FileService : IFileService
     {
         var file = await PickSaveFileAsync();
         if (file is null) return null;
-        
+
         var path = file.Path.LocalPath;
         await SaveFileAsync(path, content, ct);
 
@@ -54,22 +54,20 @@ public sealed class FileService : IFileService
         var dialog = new ConfirmationDialog(message);
         return await dialog.ShowDialog<bool>(owner);
     }
-    
+
     public async Task ShowAboutDialogAsync()
     {
         var owner = GetMainWindow();
         var dialog = new AboutWindow();
         await dialog.ShowDialog(owner);
     }
-    
+
     public void Exit()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.Shutdown();   
-        }
+            desktop.Shutdown();
     }
-    
+
     // Ezeket majd kulon kellene szervezni
     private static async Task<IStorageFile?> PickOpenFileAsync()
     {
@@ -78,9 +76,9 @@ public sealed class FileService : IFileService
         {
             Title = "Open File",
             AllowMultiple = false,
-            FileTypeFilter = [FilePickerFileTypes.TextPlain],
+            FileTypeFilter = [FilePickerFileTypes.TextPlain]
         });
-        
+
         return files?.Count >= 1 ? files[0] : null;
     }
 
@@ -91,10 +89,10 @@ public sealed class FileService : IFileService
         {
             Title = "Save As",
             DefaultExtension = "txt",
-            FileTypeChoices = [FilePickerFileTypes.TextPlain],
+            FileTypeChoices = [FilePickerFileTypes.TextPlain]
         });
     }
-    
+
     private static IStorageProvider GetStorageProvider()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &&

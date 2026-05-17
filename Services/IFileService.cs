@@ -1,4 +1,3 @@
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,8 +11,8 @@ public interface IFileService
     Task<bool> ConfirmAsync(string message);
     Task ShowAboutDialogAsync();
     void Exit();
-
 }
 
 public record FileOpenResult(string Path, string Content, string Encoding);
+
 public record FileSaveResult(string Path, string Name);

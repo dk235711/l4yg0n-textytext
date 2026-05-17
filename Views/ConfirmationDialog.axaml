@@ -5,11 +5,11 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         MinWidth="360">
-        <StackPanel Margin="24" Spacing="12">
-                <TextBlock x:Name="MessageText" TextWrapping="Wrap" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
-                        <Button x:Name="YesButton" Content="Yes" Click="OnYes" />
-                        <Button x:Name="NoButton" Content="No" Click="OnNo" />
-                </StackPanel>
+    <StackPanel Margin="24" Spacing="12">
+        <TextBlock x:Name="MessageText" TextWrapping="Wrap" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+            <Button x:Name="YesButton" Content="Yes" Click="OnYes" />
+            <Button x:Name="NoButton" Content="No" Click="OnNo" />
         </StackPanel>
+    </StackPanel>
 </Window>

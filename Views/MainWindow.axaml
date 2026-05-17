@@ -13,57 +13,58 @@
 
     <!-- Ezzel a TextBox borderjet rejtjuk el, amikor focusban van -->
     <Window.Resources>
-        <SolidColorBrush x:Key="TextControlBorderBrushFocused">Transparent</SolidColorBrush>
     </Window.Resources>
 
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderBrush="#f0f0f0" BorderThickness="0,0,0,2">
-        <Menu Background="#ffff" >
-            <MenuItem Header="_File">
-                <MenuItem x:Name="NewMenuItem" Header="_New" Command="{Binding NewFileCommand}"></MenuItem>
-                <MenuItem x:Name="OpenMenuItem" Header="_Open" Command="{Binding OpenFileCommand}"></MenuItem>
-                <MenuItem x:Name="SaveMenuItem" Header="_Save" Command="{Binding SaveFileCommand}"></MenuItem>
-                <MenuItem x:Name="SaveAsMenuItem" Header="Save _As..." Command="{Binding SaveFileAsCommand}"></MenuItem>
-                <Separator/>
-                <MenuItem Header="_Exit" Command="{Binding ExitCommand}"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_About TextyText" Command="{Binding AboutCommand}"></MenuItem>
-            </MenuItem>
-        </Menu>
+            <Menu Background="#ffff">
+                <MenuItem Header="_File">
+                    <MenuItem x:Name="NewMenuItem" Header="_New" Command="{Binding NewFileCommand}" />
+                    <MenuItem x:Name="OpenMenuItem" Header="_Open" Command="{Binding OpenFileCommand}" />
+                    <MenuItem x:Name="SaveMenuItem" Header="_Save" Command="{Binding SaveFileCommand}" />
+                    <MenuItem x:Name="SaveAsMenuItem" Header="Save _As..." Command="{Binding SaveFileAsCommand}" />
+                    <Separator />
+                    <MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About TextyText" Command="{Binding AboutCommand}" />
+                </MenuItem>
+            </Menu>
         </Border>
         <Border x:Name="StatusBar" DockPanel.Dock="Bottom" BorderBrush="#dddddd" BorderThickness="0, 2, 0, 0">
             <Grid Background="#f0f0f0" MinHeight="25" Margin="0, 0, 8, 0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" />
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4" />
                     <!-- Cursor position -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding CursorPos}"/>
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding CursorPos}" />
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4" />
                     <!-- Ez lenne a Zoom level egyszer, de nem lesz implementalva -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="100%"/>
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="100%" />
                 </StackPanel>
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
-                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4" />
                     <!-- CRLF / LF -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding LineEndingType}"/>
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding LineEndingType}" />
                 </StackPanel>
                 <StackPanel Grid.Column="4" Orientation="Horizontal">
-                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding Encoding}"/>
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4" />
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding Encoding}" />
                 </StackPanel>
             </Grid>
         </Border>
-        <TextBox Name="Editor" Background="#ffffff" Text="{Binding FileText, Mode=TwoWay}" CaretIndex="{Binding CaretIndex, Mode=TwoWay}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"></TextBox>
+        <TextBox Name="Editor" Background="#ffffff" Text="{Binding FileText, Mode=TwoWay}"
+                 CaretIndex="{Binding CaretIndex, Mode=TwoWay}" AcceptsReturn="True" AcceptsTab="True"
+                 TextWrapping="Wrap" />
     </DockPanel>
 
 </Window>

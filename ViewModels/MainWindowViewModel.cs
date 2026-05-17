@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using l4yg0n_textytext.Services;
@@ -14,29 +12,34 @@ namespace l4yg0n_textytext.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly IFileService _fileService;
-
-    // ObservableProperty konvencio: private _varName --> hivatkozva VarName
-    [ObservableProperty] private string? _fileText;
-    // Modosult-e a fajl tartalma, miota megnyitottuk?
-    [ObservableProperty][NotifyPropertyChangedFor(nameof(WindowTitle))] private bool _isDirty;
-    [ObservableProperty][NotifyPropertyChangedFor(nameof(WindowTitle))] private string? _fileDisplayName;
-    
-    public string WindowTitle => FileDisplayName is not null
-        ? $"{FileDisplayName}{(IsDirty ? " *" : "")} - TextyText"
-        : $"Untitled{(IsDirty ? " *" : "")} - TextyText";
+    [ObservableProperty] private int _caretIndex;
 
     private string? _currentFilePath;
 
     [ObservableProperty] private string _cursorPos = "Ln 1, Col 1";
+    [ObservableProperty] private string _encoding = "Unicode (UTF-8)";
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(WindowTitle))]
+    private string? _fileDisplayName;
+
+    // ObservableProperty konvencio: private _varName --> hivatkozva VarName
+    [ObservableProperty] private string? _fileText;
+
+    // Modosult-e a fajl tartalma, miota megnyitottuk?
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(WindowTitle))]
+    private bool _isDirty;
+
     [ObservableProperty] private string _lineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
-    [ObservableProperty] private int _caretIndex;
-    [ObservableProperty] private string _encoding =  "Unicode (UTF-8)";
 
     public MainWindowViewModel(IFileService fileService)
     {
         _fileService = fileService;
     }
-    
+
+    public string WindowTitle => FileDisplayName is not null
+        ? $"{FileDisplayName}{(IsDirty ? " *" : "")} - TextyText"
+        : $"Untitled{(IsDirty ? " *" : "")} - TextyText";
+
     // Avalonia builtin-t extendelunk
     partial void OnFileTextChanged(string? value)
     {
@@ -57,6 +60,7 @@ public partial class MainWindowViewModel : ViewModelBase
             LineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
             return;
         }
+
         LineEndingType = text.Contains("\r\n") ? "Windows (CRLF)" : "UNIX (LF)";
     }
 
@@ -75,10 +79,10 @@ public partial class MainWindowViewModel : ViewModelBase
         var line = textBefore.Count(c => c == '\n') + 1;
         var lastNewline = textBefore.LastIndexOf('\n');
         var col = lastNewline >= 0 ? caret - lastNewline : caret + 1;
-        
+
         CursorPos = $"Ln {line}, Col {col}";
     }
-    
+
     [RelayCommand]
     private async Task NewFile()
     {
@@ -90,7 +94,7 @@ public partial class MainWindowViewModel : ViewModelBase
         IsDirty = false;
         CaretIndex = 0;
     }
-    
+
     [RelayCommand]
     private async Task OpenFile(CancellationToken token)
     {
@@ -101,7 +105,7 @@ public partial class MainWindowViewModel : ViewModelBase
         IsDirty = false;
         _currentFilePath = result.Path;
         FileDisplayName = Path.GetFileName(result.Path);
-        Encoding =  result.Encoding;
+        Encoding = result.Encoding;
     }
 
     [RelayCommand]
@@ -123,12 +127,12 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         var result = await _fileService.SaveFileAsAsync(FileText ?? string.Empty);
         if (result is null) return;
-        
+
         _currentFilePath = result.Path;
         FileDisplayName = result.Name;
         IsDirty = false;
     }
-    
+
     [RelayCommand]
     private async Task About()
     {

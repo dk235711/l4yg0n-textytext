@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -7,11 +8,21 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using l4yg0n_textytext.Models.DocumentStates;
 using l4yg0n_textytext.Services;
+using l4yg0n_textytext.Services.LineEndings;
 
 namespace l4yg0n_textytext.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly ILineEndingStrategy _lfStrategy = new LfLineEndingStrategy();
+    private readonly ILineEndingStrategy _crlfStrategy = new CrlfLineEndingStrategy();
+    
+    public IReadOnlyList<ILineEndingStrategy> AvailableLineEndings { get; }
+
+    [ObservableProperty] private ILineEndingStrategy _selectedLineEndingStrategy;
+
+    [ObservableProperty] private string _lineEndingType;
+    
     private readonly IFileService _fileService;
     [ObservableProperty] private int _caretIndex;
 
@@ -28,12 +39,15 @@ public partial class MainWindowViewModel : ViewModelBase
     // ObservableProperty konvencio: private _varName --> hivatkozva VarName
     [ObservableProperty] private string? _fileText;
 
-    [ObservableProperty] private string _lineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
-
     public MainWindowViewModel(IFileService fileService)
     {
         _fileService = fileService;
         _currentState = new CleanState();
+
+        AvailableLineEndings = new List<ILineEndingStrategy> { _crlfStrategy, _lfStrategy };
+        
+        SelectedLineEndingStrategy = OperatingSystem.IsWindows() ? _crlfStrategy : _lfStrategy;
+        LineEndingType = SelectedLineEndingStrategy.DisplayName;
     }
 
     public bool IsDirty => _currentState.IsDirty;
@@ -55,7 +69,6 @@ public partial class MainWindowViewModel : ViewModelBase
     partial void OnFileTextChanged(string? value)
     {
         _currentState.HandleTextChanged(this);
-        DetectLineEnding(value);
         UpdateCursorPos();
     }
 
@@ -64,15 +77,11 @@ public partial class MainWindowViewModel : ViewModelBase
         UpdateCursorPos();
     }
 
-    private void DetectLineEnding(string? text)
+    // Valtas kulonbozo sorvegek kozott
+    partial void OnSelectedLineEndingStrategyChanged(ILineEndingStrategy value)
     {
-        if (string.IsNullOrEmpty(text))
-        {
-            LineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
-            return;
-        }
-
-        LineEndingType = text.Contains("\r\n") ? "Windows (CRLF)" : "UNIX (LF)";
+        LineEndingType = value.DisplayName;
+        FileText = value.NormalizeLineEndings(FileText);
     }
 
     private void UpdateCursorPos()
@@ -118,6 +127,8 @@ public partial class MainWindowViewModel : ViewModelBase
         if (result is null) return;
 
         FileText = result.Content;
+        SelectedLineEndingStrategy =
+            LineEndingDetector.Detect(result.Content, _lfStrategy, _crlfStrategy, SelectedLineEndingStrategy);
         _currentFilePath = result.Path;
         FileDisplayName = Path.GetFileName(result.Path);
         Encoding = result.Encoding;
@@ -130,7 +141,8 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (_currentFilePath is not null)
         {
-            await _fileService.SaveFileAsync(_currentFilePath, FileText ?? string.Empty);
+            var normalizedText = SelectedLineEndingStrategy.NormalizeLineEndings(FileText);
+            await _fileService.SaveFileAsync(_currentFilePath, normalizedText);
             _currentState.HandleSaved(this);
         }
         else
@@ -142,7 +154,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task SaveFileAs()
     {
-        var result = await _fileService.SaveFileAsAsync(FileText ?? string.Empty);
+        var normalizedText = SelectedLineEndingStrategy.NormalizeLineEndings(FileText);
+        var result = await _fileService.SaveFileAsAsync(normalizedText);
         if (result is null) return;
 
         _currentFilePath = result.Path;

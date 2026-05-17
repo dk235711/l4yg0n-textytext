@@ -13,6 +13,7 @@
 
     <!-- Ezzel a TextBox borderjet rejtjuk el, amikor focusban van -->
     <Window.Resources>
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused">Transparent</SolidColorBrush>
     </Window.Resources>
 
     <DockPanel>
@@ -54,7 +55,10 @@
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4" />
                     <!-- CRLF / LF -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding LineEndingType}" />
+                    <ComboBox
+                        ItemsSource="{Binding AvailableLineEndings}"
+                        SelectedItem="{Binding SelectedLineEndingStrategy, Mode=TwoWay}" />
+                    <!--<TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding LineEndingType}" /> -->
                 </StackPanel>
                 <StackPanel Grid.Column="4" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4" />

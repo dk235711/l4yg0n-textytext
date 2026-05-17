@@ -36,6 +36,17 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private async Task NewFile()
+    {
+        if (!await ConfirmDiscardAsync()) return;
+
+        FileText = null;
+        _currentFilePath = null;
+        FileDisplayName = null;
+        IsDirty = false;
+    }
+    
+    [RelayCommand]
     private async Task OpenFile(CancellationToken token)
     {
         var result = await _fileService.OpenFileAsync(token);

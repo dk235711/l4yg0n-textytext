@@ -20,7 +20,7 @@
         <Border DockPanel.Dock="Top" BorderBrush="#f0f0f0" BorderThickness="0,0,0,2">
         <Menu Background="#ffff" >
             <MenuItem Header="_File">
-                <MenuItem x:Name="NewMenuItem" Header="_New"></MenuItem>
+                <MenuItem x:Name="NewMenuItem" Header="_New" Command="{Binding NewFileCommand}"></MenuItem>
                 <MenuItem x:Name="OpenMenuItem" Header="_Open" Command="{Binding OpenFileCommand}"></MenuItem>
                 <MenuItem x:Name="SaveMenuItem" Header="_Save" Command="{Binding SaveFileCommand}"></MenuItem>
                 <MenuItem x:Name="SaveAsMenuItem" Header="Save _As..." Command="{Binding SaveFileAsCommand}"></MenuItem>

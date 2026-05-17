@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -29,6 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _cursorPos = "Ln 1, Col 1";
     [ObservableProperty] private string _lineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
     [ObservableProperty] private int _caretIndex;
+    [ObservableProperty] private string _encoding =  "Unicode (UTF-8)";
 
     public MainWindowViewModel(IFileService fileService)
     {
@@ -99,6 +101,7 @@ public partial class MainWindowViewModel : ViewModelBase
         IsDirty = false;
         _currentFilePath = result.Path;
         FileDisplayName = Path.GetFileName(result.Path);
+        Encoding =  result.Encoding;
     }
 
     [RelayCommand]

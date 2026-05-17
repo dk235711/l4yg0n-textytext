@@ -24,11 +24,12 @@ public sealed class FileService : IFileService
 
         // Ide majd teszunk egy dialog boxot tul nagy fajlok eseten
 
-        await using var stream = await file.OpenReadAsync();
+        var stream = await file.OpenReadAsync();
         using var reader = new StreamReader(stream);
         var content = await reader.ReadToEndAsync(ct);
+        var encoding = reader.CurrentEncoding.EncodingName;
 
-        return new FileOpenResult(file.Path.LocalPath, content);
+        return new FileOpenResult(file.Path.LocalPath, content, encoding);
     }
 
     public async Task SaveFileAsync(string path, string content, CancellationToken ct = default)

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,5 +15,5 @@ public interface IFileService
 
 }
 
-public record FileOpenResult(string Path, string Content);
+public record FileOpenResult(string Path, string Content, string Encoding);
 public record FileSaveResult(string Path, string Name);

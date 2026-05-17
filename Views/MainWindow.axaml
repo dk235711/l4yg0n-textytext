@@ -59,8 +59,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="4" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
-                    <!-- Encoding - ez is csak egy placeholder, nem fogjuk implementalni -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="UTF-8"/>
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding Encoding}"/>
                 </StackPanel>
             </Grid>
         </Border>

@@ -46,8 +46,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
         AvailableLineEndings = new List<ILineEndingStrategy> { _crlfStrategy, _lfStrategy };
         
-        SelectedLineEndingStrategy = OperatingSystem.IsWindows() ? _crlfStrategy : _lfStrategy;
-        LineEndingType = SelectedLineEndingStrategy.DisplayName;
+        _selectedLineEndingStrategy = OperatingSystem.IsWindows() ? _crlfStrategy : _lfStrategy;
+        _lineEndingType = _selectedLineEndingStrategy.DisplayName;
     }
 
     public bool IsDirty => _currentState.IsDirty;

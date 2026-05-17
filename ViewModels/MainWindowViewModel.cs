@@ -93,6 +93,7 @@ public partial class MainWindowViewModel : ViewModelBase
         FileDisplayName = null;
         IsDirty = false;
         CaretIndex = 0;
+        Encoding = "Unicode (UTF-8)";
     }
 
     [RelayCommand]

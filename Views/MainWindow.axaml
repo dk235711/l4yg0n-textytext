@@ -32,6 +32,38 @@
             </MenuItem>
         </Menu>
         </Border>
+        <Border x:Name="StatusBar" DockPanel.Dock="Bottom" BorderBrush="#dddddd" BorderThickness="0, 2, 0, 0">
+            <Grid Background="#f0f0f0" MinHeight="25" Margin="0, 0, 8, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <!-- Cursor position -->
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="Placeholder"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <!-- Ez lenne a Zoom level egyszer, de nem lesz implementalva -->
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="100%"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <!-- CRLF / LF -->
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="LineEnding"/>
+                </StackPanel>
+                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                    <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
+                    <!-- Encoding -->
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="UTF-8 (placeholder)"/>
+                </StackPanel>
+            </Grid>
+        </Border>
         <TextBox Name="Editor" Background="#ffffff" Text="{Binding FileText, Mode=TwoWay}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"></TextBox>
     </DockPanel>
 

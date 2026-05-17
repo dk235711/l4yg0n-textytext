@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Linq;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -12,7 +14,7 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly IFileService _fileService;
 
-    // ObservableProperty convencio: private _varName --> hivatkozva VarName
+    // ObservableProperty konvencio: private _varName --> hivatkozva VarName
     [ObservableProperty] private string? _fileText;
     // Modosult-e a fajl tartalma, miota megnyitottuk?
     [ObservableProperty][NotifyPropertyChangedFor(nameof(WindowTitle))] private bool _isDirty;
@@ -24,6 +26,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private string? _currentFilePath;
 
+    [ObservableProperty] private string _cursorPos = "Ln 1, Col 1";
+    [ObservableProperty] private string _lineEndingType = "Windows (CRLF)";
+    [ObservableProperty] private int _caretIndex;
+
     public MainWindowViewModel(IFileService fileService)
     {
         _fileService = fileService;
@@ -33,8 +39,45 @@ public partial class MainWindowViewModel : ViewModelBase
     partial void OnFileTextChanged(string? value)
     {
         IsDirty = true;
+        DetectLineEnding(value);
+        UpdateCursorPos();
     }
 
+    partial void OnCaretIndexChanged(int value)
+    {
+        UpdateCursorPos();
+    }
+
+    private void DetectLineEnding(string? text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            // A default lehetne OS-specifikus is, valoszinuleg pontosabb is lenne
+            LineEndingType = "Windows (CRLF)";
+            return;
+        }
+        LineEndingType = text.Contains("\r\n") ? "Windows (CRLF)" : "UNIX (LF)";
+    }
+
+    private void UpdateCursorPos()
+    {
+        var text = FileText ?? string.Empty;
+        var caret = Math.Min(CaretIndex, text.Length);
+
+        if (caret <= 0)
+        {
+            CursorPos = "Ln 1, Col 1";
+            return;
+        }
+
+        var textBefore = text[..caret];
+        var line = textBefore.Count(c => c == '\n') + 1;
+        var lastNewline = textBefore.LastIndexOf('\n');
+        var col = lastNewline >= 0 ? caret - lastNewline : caret + 1;
+        
+        CursorPos = $"Ln {line}, Col {col}";
+    }
+    
     [RelayCommand]
     private async Task NewFile()
     {
@@ -44,6 +87,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _currentFilePath = null;
         FileDisplayName = null;
         IsDirty = false;
+        CaretIndex = 0;
     }
     
     [RelayCommand]

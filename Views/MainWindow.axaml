@@ -45,7 +45,7 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
                     <!-- Cursor position -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="Placeholder"/>
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding CursorPos}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
@@ -55,16 +55,16 @@
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
                     <!-- CRLF / LF -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="LineEnding"/>
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="{Binding LineEndingType}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="4" Orientation="Horizontal">
                     <Border VerticalAlignment="Stretch" Width="1" Background="#dddddd" Margin="0,4,0,4"/>
-                    <!-- Encoding -->
-                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="UTF-8 (placeholder)"/>
+                    <!-- Encoding - ez is csak egy placeholder, nem fogjuk implementalni -->
+                    <TextBlock VerticalAlignment="Center" Margin="8, 0" Text="UTF-8"/>
                 </StackPanel>
             </Grid>
         </Border>
-        <TextBox Name="Editor" Background="#ffffff" Text="{Binding FileText, Mode=TwoWay}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"></TextBox>
+        <TextBox Name="Editor" Background="#ffffff" Text="{Binding FileText, Mode=TwoWay}" CaretIndex="{Binding CaretIndex, Mode=TwoWay}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"></TextBox>
     </DockPanel>
 
 </Window>

@@ -27,7 +27,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private string? _currentFilePath;
 
     [ObservableProperty] private string _cursorPos = "Ln 1, Col 1";
-    [ObservableProperty] private string _lineEndingType = "Windows (CRLF)";
+    [ObservableProperty] private string _lineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
     [ObservableProperty] private int _caretIndex;
 
     public MainWindowViewModel(IFileService fileService)
@@ -52,8 +52,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (string.IsNullOrEmpty(text))
         {
-            // A default lehetne OS-specifikus is, valoszinuleg pontosabb is lenne
-            LineEndingType = "Windows (CRLF)";
+            LineEndingType = OperatingSystem.IsWindows() ? "Windows (CRLF)" : "UNIX (LF)";
             return;
         }
         LineEndingType = text.Contains("\r\n") ? "Windows (CRLF)" : "UNIX (LF)";
